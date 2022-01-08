@@ -1,0 +1,61 @@
+        mysql安装：  https://blog.csdn.net/uisoul/article/details/79020270
+           
+
+yum install -y gcc gcc-c++ cmake ncurses ncurses-devel bison wget openssl-devel.x86_64
+
+useradd mysql -s /sbin/nologin -M -g mysql
+
+groupadd  mysql
+
+mkdir -p /home/demo/tools/
+
+cd /home/demo/tools/
+
+wget https://cdn.mysql.com/archives/mysql-5.7/mysql-5.7.29.tar.gz
+
+tar -zxvf mysql-5.7.29.tar.gz
+
+mkdir /application
+
+mkdir /application/mysql
+
+mkdir /application/data
+
+mkdir /application/tmp
+
+cd mysql-5.7.29
+
+cmake -DCMAKE_INSTALL_PREFIX=/application/mysql  -DMYSQL_DATADIR=/application/data -DMYSQL_UNIX_ADDR=/application/tmp/mysql.sock -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci -DDOWNLOAD_BOOST=1 -DWITH_BOOST=boost
+
+make -j 2 && make install
+
+
+vi /etc/my.cnf
+
+[mysqld]
+port = 3306
+socket = /application/tmp/mysql.sock
+user = mysql
+basedir = /application/mysql
+datadir = /application/data
+pid-file = /application/data/mysql.pid
+sql_mode='ONLY_FULL_GROUP_BY'
+log_error = /application/mysql/mysql-error.log
+!includedir /etc/my.cnf.d
+[client]
+port = 3306
+socket = /application/tmp/mysql.sock
+
+chown -R mysql.mysql /application
+
+/application/mysql/bin/mysqld --initialize-insecure --user=mysql --basedir=/application/mysql --datadir=/application/data
+
+cd /application/mysql/support-files/
+
+echo 'export PATH=/application/mysql/bin:$PATH' >> /etc/profile
+
+source /etc/profile
+
+cp mysql.server /etc/init.d/mysqld
+
+/etc/init.d/mysqld start

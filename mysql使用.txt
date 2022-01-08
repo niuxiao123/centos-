@@ -1,0 +1,39 @@
+select *from 查看数据表里的内容
+desc   查看数据表格式
+
+查看数据库show tables   新建数据库 create 
+新建数据表
+增加数据  
+查看数据 select * from longyan1
+
+
+
+
+
+
+
+
+
+select host,user from user  查看mysql    用户有哪些
+
+1create user 'longyan1'@'2.48.63.37' identified by '12345678';  创建用户
+
+2GRANT ALL PRIVILEGES ON *.* TO 'rick'@'%' IDENTIFIED BY 'zeusniubi';创建用户给与所有权限
+
+3GRANT SElECT ON *.* TO 'username'@'%' IDENTIFIED BY "password";  创建一个给予只读的权限；
+
+
+
+
+longyan1指的是用户
+123456778 指的用户密码
+
+drop user XXX;  删除用户
+
+2.48.63.37 指的是允许此IP访问
+
+
+delete from user where user='XXX' and host='localhost'   删除用户
+
+
+flush privileges;  刷新
